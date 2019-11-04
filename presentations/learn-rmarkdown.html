@@ -4,7 +4,7 @@
     <title>Getting Started with R Markdown</title>
     <meta charset="utf-8" />
     <meta name="author" content="Dan Ovando" />
-    <meta name="date" content="2019-11-03" />
+    <meta name="date" content="2019-11-04" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <script src="libs/kePrint-0.0.1/kePrint.js"></script>
@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 # Getting Started with R Markdown
 ### Dan Ovando
 ### FSH 507
-### 2019-11-03
+### 2019-11-04
 
 ---
 
@@ -252,6 +252,42 @@ plot(1:10)
 
 ---
 
+# Code Chunks
+
+You can set (and override) [chunk options](https://yihui.name/knitr/options/#chunk_options) in individual chunks. 
+
+For example suppose you want by default 
+
+.pull-left[
+- Hide the actual code in each chunk (`echo = FALSE`)
+
+- Hide all warning messages (`warning = FALSE`)
+
+- Cache results (`cache = TRUE`)
+
+- All plots are 6inch wide and 4 inches high (`fig.dim = c(6,4)`)
+
+- And all plots centered (`fig.align = "center"`)
+
+] .pull-right[
+At the start of our .Rmd, we can run
+
+
+```r
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  fig.dim = c(6, 4),
+  fig.align = "center",
+  cache = TRUE
+)
+```
+
+]
+
+
+---
+
 # It doesn't have to be r!
 
 R Markdown allows you to run lots of [other kinds of code](https://bookdown.org/yihui/rmarkdown/language-engines.html)!
@@ -290,7 +326,7 @@ plt.plot([0, 2, 1, 4])
 plt.show()
 ```
 
-&lt;img src="learn-rmarkdown_files/figure-html/unnamed-chunk-3-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="learn-rmarkdown_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -736,7 +772,7 @@ Cross-referencing is the main extension that makes bookdown my default method of
 As you can see in Fig.\@ref(fig:main-fig)
 ```
 
-This will produce "As you can see in Fig.&lt;number of the figure&gt;"
+This will produce "As you can see in Fig.*number of the figure*"
   - Automatically keeps track of the order of your figures!
 
 ---
@@ -758,7 +794,7 @@ Tables work just about the same way.
 As you can see in Table.\@ref(tab:main-table)
 ```
 
-This will produce "As you can see in Table.&lt;number of the figure&gt;"
+This will produce "As you can see in Table.*number of the table*"
 
 
 ---
@@ -1034,7 +1070,7 @@ Alternative options I've seen
 * Only write the methods/results in R Markdown, "text heavy" sections in Word/whatever
   * Stitch together as best you can
   
-* There is a package called [reedoc](https://noamross.github.io/redoc/) in the works that allows you to knit to Word, get edits from authors, then pull updated document (with track changes) back into Word!
+* There is a package called [redoc](https://noamross.github.io/redoc/) in the works that allows you to knit to Word, get edits from authors, then pull updated document (with track changes) back into Word!
   * Very beta
 
 * Send knitted docs to authors, and manually incorporate changes into .Rmd :(
@@ -1052,6 +1088,22 @@ Evaluate each project and consider which pain is worse:
 
 
 &lt;img src="homer.gif" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# A note on cacheing
+
+R markdown lets you cache results for none, all, or some code chunks. 
+
+I often use it when I'm focusing on formatting (don't want to wait 20min to see if my new LaTeX template worked)
+
+Cacheing is not a substitute for reproducibility!
+
+- By default cached chunks won't rerun if code in them has changed
+  - What if dependent code has changed?
+  
+**Use cacheing for development, always clear cache and do a clean run before submitting!**
 
 
 ---
@@ -1110,7 +1162,7 @@ If you've done it all right, by sourcing your main script, you go from raw data 
 
 # Exercise - Pretend Paper
 
-1. Create a new .Rmd
+1. Create a GitHub repo containing a new .Rmd
   - See if there's an rticles template for a journal you use
 
 2. Read in some data (I've added some to data folder)
@@ -1172,7 +1224,7 @@ Downside is that ioslides (and others like it) aren't all that flexible: enter x
 
 # Xaringan
 
-xaringan is fully customizable (and looks pretty good out the gates)
+xaringan is fully customizable (and looks pretty good out the gate)
 
   - Real customization requires [learning CSS](https://www.codecademy.com/learn/learn-css)
     - Bonus: sets you up for a career in web design!
@@ -1201,6 +1253,7 @@ Simplest option: Open in Chrome (yes, it really has to be Chrome), select Print,
 A reasonable question: Why in the world would you use R to write a blog?
 
 --
+
 Are we trying to text Nelly with Excel?
 &lt;img src="https://media.giphy.com/media/OgRQGJ3dbuz8A/giphy.gif" style="display: block; margin: auto;" /&gt;
 
