@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Getting Started with R Markdown</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dan Ovando" />
+    <meta name="date" content="2019-11-03" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Getting Started with R Markdown
+### Dan Ovando
+### FSH 507
+### 2019-11-03
+
+---
+
+
+
+
+
+# Why R Markdown?
+
+&lt;iframe width="100%" height="400" src="https://www.youtube.com/embed/s3JldKoA0zw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen&gt;&lt;/iframe&gt;
+
+---
+
+# Class Objectives
+
+- Understanding basics of R Markdown
+
+- Documents with R Markdown
+  - knitting to different outputs
+  - cross-referencing
+  - citations
+  - customizing appearance
+
+- The R Markdown Family
+
+  - Presentations with `xaringan`
+
+  - Dissertations with `huskydown`
+
+  - Websites with `blogdown`
+
+- Exercise:
+  - Write a sample paper for submission using `rticles`
+
+.footnote[Materials drawn from [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/basics.html#)]
+---
+
+# What is R Markdown?
+
+Markdown is a syntax that allows you write readable text that is translated into a desired output (e.g. HTML, LaTeX, Word) using [`pandoc`](https://pandoc.org/MANUAL.html).
+
+  - The R part just means that the file is also capable of running R code as it "knits" (and other languages!)
+  
+
+LaTeX is really powerful for formatting, but still requires users to run analyses elsewhere, and then import numbers/figures etc. 
+
+R Markdown allows you to seamlessly integrate your analysis into your report, by taking R Markdown, and passing it to pandoc
+  
+The power of pandoc means that you can use the same .Rmd file to generate a PDF of your paper or an HTML report
+
+---
+
+class: center, middle, inverse
+# Basics of R Markdown
+
+
+---
+
+# Creating R Markdown Files
+
+An R Markdown file is defined by the extension .Rmd
+
+  - Create a text file and save as &lt;your-name&gt;.Rmd
+  
+  - In RStudio, File &gt; New File &gt; R Markdown
+
+An R markdown file has three main components
+
+- Metadata written in YAML (YAML Ain't Markup Language)
+  - This is where options go
+
+- Text
+  - The actual Markdown text you're writing
+
+- Code chunks
+  - Code to be evaluated (R and just about anything else)
+
+---
+
+# The YAML
+
+The metadata are stored at the start of the document, bracketed by `---`
+
+There are lots of things that go in here, and some outputs allow for different things in here. 
+
+
+FYI, indentation matters in YAML!
+
+```yaml
+---
+title: "My Brilliant Paper"
+author: "Awesome Me"
+date: "2019-11-03"
+output: 
+  html_document: default
+---
+```
+
+---
+
+# The YAML
+
+The `output` section is where you specify what your document will be knit to, and specify options for those outputs. 
+
+The output listed first is what will be produced
+
+
+```yaml
+---
+title: "My Brilliant Paper"
+author: "Awesome Me"
+date: "2019-11-03"
+output: 
+  pdf_document: default
+  html_document:
+    toc: yes
+    float_toc: yes
+---
+```
+
+---
+
+
+# The Text
+
+Writing text is the same as just about anywhere else, except that you need to code in any formatting (instead of clicking "bold"). 
+
+You can designate headers using levels of `#`
+
+# `#` to create top level
+
+## `##` to create second level, etc.
+
+---
+
+# The Text
+
+.pull-left[
+Bullets are as simple as
+
+```
+- Item
+  - sub item
+- Item
+  - another
+```
+
+- Item
+  - sub item
+- Item
+  - another
+  ]
+  .pull-right[
+
+Same with numbered lists
+
+```
+1. Item
+  - sub item
+2. Item
+  - another
+```
+1. Item
+  - sub item
+2. Item
+  - another
+]
+
+---
+
+
+
+# The Text
+
+A few other Markdown text tricks
+
+`*text*` makes text *italicized*
+
+`**text**` for **bold**
+
+`x~i~` for for subscript
+
+`x^2^` for subscript
+
+`[displauy](link)` creates [hyperlinks](https://bookdown.org/yihui/rmarkdown/markdown-syntax.html#markdown-syntax)
+
+Color is a little [finiky](https://dr-harper.github.io/rmarkdown-cookbook/font-color.html), this works for html or pdf output
+
+Roses are `$\color{red}{\text{beautiful red}}$`, 
+violets are `$\color{blue}{\text{lovely blue}}$`.
+
+Roses are `\(\color{red}{\text{beautiful red}}\)`, 
+violets are `\(\color{blue}{\text{lovely blue}}\)`.
+
+When in doubt, Google the language your knitting to (HTML, LaTeX)
+---
+
+# Code Chunks
+
+This is where R Markdown gets fun! Code chunks work the same as any R script 
+
+````markdown
+This is a paragraph in an R Markdown document.
+
+Below is a code chunk:
+
+```{r}
+# make an amazing plot
+plot(1:10)
+```
+
+```
+````
+
+&lt;img src="learn-rmarkdown_files/figure-html/unnamed-chunk-1-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Code Chunks
+
+You can specify lots of options for chunks (see [cheatsheet](https://rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf))
+
+
+````markdown
+```{r my-plot, fig.height = 2, fig.width = 6}
+# make an amazing plot
+plot(1:10)
+```
+```
+````
+&lt;img src="learn-rmarkdown_files/figure-html/unnamed-chunk-2-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# It doesn't have to be r!
+
+R Markdown allows you to run lots of [other kinds of code](https://bookdown.org/yihui/rmarkdown/language-engines.html)!
+
+
+```r
+names(knitr::knit_engines$get())
+```
+
+```
+##  [1] "awk"       "bash"      "coffee"    "gawk"      "groovy"   
+##  [6] "haskell"   "lein"      "mysql"     "node"      "octave"   
+## [11] "perl"      "psql"      "Rscript"   "ruby"      "sas"      
+## [16] "scala"     "sed"       "sh"        "stata"     "zsh"      
+## [21] "highlight" "Rcpp"      "tikz"      "dot"       "c"        
+## [26] "fortran"   "fortran95" "asy"       "cat"       "asis"     
+## [31] "stan"      "block"     "block2"    "js"        "css"      
+## [36] "sql"       "go"        "python"    "julia"     "sass"     
+## [41] "scss"
+```
+
+---
+
+# Python in .Rmd
+
+The only thing you have to do is change ` ```{r} ` to ` ```{python} `
+
+  - And have python installed correctly
+
+
+
+
+```python
+import matplotlib.pyplot as plt
+plt.plot([0, 2, 1, 4])
+plt.show()
+```
+
+&lt;img src="learn-rmarkdown_files/figure-html/unnamed-chunk-3-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+# Code Chunk Paths
+
+One word of warning: For a variety of reasons, by default code in R markdown runs with the working directory set to **where the .Rmd file lives**
+
+This means that `read.csv("data/mydata.csv")` might work in the console, but not in your .Rmd file if it's saved in say `presentations`
+
+`here` solves that! `here::here("data","mydata.csv")` will work the same in a script as it does in a .Rmd file
+
+---
+
+
+# In-line code
+
+You can also include code in-line instead of as a code chunk using ` `r ` `
+
+This is really handy for inserting numbers into your text
+
+
+```r
+my_amazing_result &lt;- 2^2
+```
+
+
+
+```markdown
+The amazing result of our experiment was `r my_amazing_result`
+```
+
+The amazing result of our experiment was 4
+
+in-line code can be as complex as want it to be, but once it gets more than one line I usually move things to a chunk. 
+
+---
+
+# Tables
+
+There are lots of options for tables in R Markdown. 
+
+You can write your own by basically drawing them
+
+
+
+```markdown
+
+|species|length| units|
+|------:|:-----|-----:|
+| cod   |12    | cm   |
+
+```
+
+|species|length| units|
+|------:|:-----|-----:|
+| cod   |12    | cm   |
+
+This gets pretty cumbersome for anything but the simplest tables
+
+The `knitr::kable` function and `kableExtra` package are the starting point for fancier tables
+
+---
+
+
+# `kable` and `kableextra`
+
+
+
+```r
+knitr::kable(head(mtcars), caption = "My Table", format = "html")
+```
+
+&lt;table&gt;
+&lt;caption&gt;My Table&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; mpg &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; cyl &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; disp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; hp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; drat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; wt &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; qsec &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; vs &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; am &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; gear &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; carb &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mazda RX4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 160 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 110 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.90 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.620 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.46 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mazda RX4 Wag &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 160 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 110 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.90 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.875 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.02 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Datsun 710 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 108 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 93 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.320 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.61 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Hornet 4 Drive &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 258 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 110 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.08 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.215 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Hornet Sportabout &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 360 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 175 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.440 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.02 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Valiant &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 225 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 105 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+---
+
+# kableExtra
+
+the `kableExtra` package as lots of options for customizing tables (See examples [here](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html))
+
+
+```r
+iris[1:2, ] %&gt;%
+  mutate_if(is.numeric, function(x) {
+    cell_spec(x, bold = T, 
+              color = spec_color(x, end = 0.9),
+              font_size = spec_font_size(x))
+  }) %&gt;%
+  mutate(Species = cell_spec(
+    Species, color = "white", bold = T,
+    background = spec_color(1:2, end = 0.9, option = "A", direction = -1)
+  )) %&gt;%
+  kable(escape = F, align = "c") %&gt;%
+  kable_styling(c("striped", "condensed"), full_width = F)
+```
+
+&lt;table class="table table-striped table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;"&gt; Sepal.Length &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Sepal.Width &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Petal.Length &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Petal.Width &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Species &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; &lt;span style=" font-weight: bold;    color: rgba(187, 223, 39, 1) !important;font-size: 16px;"&gt;5.1&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; &lt;span style=" font-weight: bold;    color: rgba(187, 223, 39, 1) !important;font-size: 16px;"&gt;3.5&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; &lt;span style=" font-weight: bold;    color: rgba(37, 131, 142, 1) !important;font-size: 12px;"&gt;1.4&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; &lt;span style=" font-weight: bold;    color: rgba(37, 131, 142, 1) !important;font-size: 12px;"&gt;0.2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; &lt;span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 206, 145, 1) !important;"&gt;setosa&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; &lt;span style=" font-weight: bold;    color: rgba(68, 1, 84, 1) !important;font-size: 8px;"&gt;4.9&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; &lt;span style=" font-weight: bold;    color: rgba(68, 1, 84, 1) !important;font-size: 8px;"&gt;3&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; &lt;span style=" font-weight: bold;    color: rgba(37, 131, 142, 1) !important;font-size: 12px;"&gt;1.4&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; &lt;span style=" font-weight: bold;    color: rgba(37, 131, 142, 1) !important;font-size: 12px;"&gt;0.2&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; &lt;span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(0, 0, 4, 1) !important;"&gt;setosa&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+---
+
+# Table Formats
+
+Tables are one area where it matters what format you're knitting to (html/PDF/word). 
+
+First, in the code chunk that is displaying the table, you need to add ` ```{r table-chunk,results = "asis"``` ` to the code chunk. 
+
+Then, when you call the table, you need to specify what format you are knitting to. I usually write a function for this 
+
+
+```r
+tabfoo &lt;- function(is_html = knitr::is_html_output()){
+if (is_html){
+  output_format &lt;- "html"
+}  else {
+  output_format &lt;- "latex"
+}
+return(output_format)
+}
+
+
+knitr::kable(head(mtcars,2), format = tabfoo())
+```
+
+
+---
+
+# Table packages
+
+knitr::kable
+- The basics
+
+[kableExtra](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html)
+  - Customizing kable tables
+  
+[gt](https://gt.rstudio.com/)
+  - Really customizable tables
+  
+[stargazer](https://www.jakeruss.com/cheatsheets/stargazer/)
+  - Nice package for formatting regression results
+  - Apparently in hibernation?
+  
+[xtable](https://cran.r-project.org/web/packages/xtable/vignettes/xtableGallery.pdf)
+  - Another option for regression tables
+
+[huxtable/huxreg](https://hughjonesd.github.io/huxtable/huxreg.html)
+  - Yet another nice option
+  
+[finalfit](https://finalfit.org/)
+  - And another option, looks promising
+
+[]
+
+---
+
+# Equations
+
+Equations are written in LaTeX format and displayed using mathjax. 
+
+Inline equations are written as &amp;#36;equation$, e.g.  &amp;#36;x = \beta^2$ produces `\(x = \beta^2\)`
+
+Centered equations are the same, just with two dollar signs
+
+```
+$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
+```
+
+`$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$`
+
+---
+
+# Debugging
+
+Debugging can be a little tricky in R Markdown, especially for longer documents. 
+
+It will often give you a helpful error message
+
+If it fails, look at the .log file that is generated and see if that gives you a clue where the problem is
+
+You can also set `error=TRUE` in chunk options if you've got a problematic chunk but want the document to knit anyway
+
+When in doubt, start commenting sections out to isolate the problem
+
+---
+
+# Debugging
+
+shift+command+c on Mac...
+
+```markdown
+&lt;!-- You can comment out code! --&gt;
+&lt;!-- ```{r} --&gt;
+&lt;!-- # why is this broken?? --&gt;
+&lt;!-- x = 2 + @ --&gt;
+&lt;!-- ``` --&gt;
+
+```
+
+
+---
+
+# Spell Check
+
+There's a spellchecker built right into RStudio!
+
+Just click the "ABC" button in the toolbar. You can even add custom dictionaries!
+
+There are also packages for [word counts &amp; readability](https://github.com/benmarwick/wordcountaddin)
+
+
+---
+
+# Exercise
+
+That's R Markdown in a nutshell!
+
+1. Create a new .Rmd file
+
+2. Check out the R Markdown [cheatsheet](https://rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+
+3. Choose some options from the cheatsheet and play around with implementing them in your file
+
+Suggestions
+  - set up document to knit to HTML, PDF, and Word
+    - Customize a setting for PDF
+  - Turn off section numbering
+  - Set global option for your .Rmd such that
+    - All figures have width 3
+    - Contents of code chunks are not displayed
+  - Run a regression
+    - Plot an aspect of your regression
+    - Create a summary table using `stargazer` or `xtable`
+    - Reference the result of your regression in an inline code snippet
+    
+
+---
+
+
+class: center, middle, inverse
+# Papers with R Markdown
+
+---
+
+
+# Papers with R Markdown
+
+Now that we've got the basics down, let's focus on what we care about in the Ivory Tower: writing papers!
+
+We're going to focus on PDF output here
+
+  - We're a while out from the (my) dream of dynamic HTML documents being the default format for papers
+  
+  - R Markdown to Word works, but frankly I don't use it
+    - help [here](https://rmarkdown.rstudio.com/articles_docx.html)
+    
+  - Journals generally let you upload files as PDF or LaTeX 
+
+**All the solutions we go over here will work for most any format, the trick is making it look nice**
+
+---
+
+# Introducing `bookdown`
+
+[bookdown](https://bookdown.org/) is an amazing package by Yihui Xie that moves R Markdown from handy for reports and homework to ready-for-publication (e.g R for Data Science is written in bookdown)
+
+Knitting using bookdown is as easy adding a "2" to the format you want, and specifying it comes from bookdown
+
+
+```yaml
+---
+title: "My Brilliant Paper"
+author: "Awesome Me"
+date: "2019-11-03"
+output: 
+  bookdown::html_document2: default
+  bookdown::pdf_document2: default
+  bookdown::word_document2: default
+---
+```
+
+
+---
+
+
+# Cross-References
+
+There's an entire [book](https://bookdown.org/yihui/bookdown/) on bookdown. 
+
+Cross-referencing is the main extension that makes bookdown my default method of papers.
+  - Figures
+  - Tables
+  - Equations
+  - Text
+  - Sections
+
+---
+
+# Cross Referencing Figures
+
+1. Add a (legally named) label to the chunk printing the figure (e.g. main-fig)
+  - `This is my cool figure!` won't work
+
+2. Include `fig.cap = "My Figure Caption"` in the chunk options (you need this if you want to cross reference)
+
+3. Reference the chunk in your text using 
+
+
+```markdown
+As you can see in Fig.\@ref(fig:main-fig)
+```
+
+This will produce "As you can see in Fig.&lt;number of the figure&gt;"
+  - Automatically keeps track of the order of your figures!
+
+---
+
+# Cross Referencing Tables
+
+Tables work just about the same way. 
+
+1. Add a (legally named) label to the chunk printing the figure (e.g. main-table)
+
+2. Include a caption/label in the appropriate manner for the function used
+  - knitr::kable(my_table, caption = "A sweet table")
+  - stargazer::stargazer(my_table, title = "A sweet table",label = "tab:main-table")
+
+2. Reference the chunk in your text using 
+
+
+```markdown
+As you can see in Table.\@ref(tab:main-table)
+```
+
+This will produce "As you can see in Table.&lt;number of the figure&gt;"
+
+
+---
+
+# Cross Referencing Equations
+
+Cross referencing equations requires writing them a bit differently (it's just LaTeX syntax)
+
+```markdown
+
+Also see Equation \@ref(eq:mean).
+
+\begin{equation}
+\bar{X} = \frac{\sum_{i=1}^n X_i}{n} (\#eq:mean)
+\end{equation}
+```
+
+
+---
+
+# Theorems
+
+bookdown supports [theorems](https://bookdown.org/yihui/bookdown/markdown-extensions-by-bookdown.html#theorems), proofs, etc!
+
+
+
+---
+
+
+
+
+# Cross-Referencing Sections
+
+You can label sections/text and cross reference that as well. 
+
+```markdown
+
+
+## Introduction {#intro}
+
+This work is important
+
+## Methods {#methods}
+
+As you can see in the [Introduction](intro), this work is important. Here's how we did it. 
+
+## Conclusion
+
+Based on our amazing methods (Section.\@ref(methods)).. we show that
+
+```
+
+---
+
+# Citations
+
+R Markdown (and bookdown) will take care of formatting your citations for you, as long as you help it a bit. 
+
+1. Use a reference manager (such as zotero/mendeley/endnote) to organize your references
+  - needs to produce some sort of citation key
+  - I use [zotero](https://www.zotero.org/) with [betterbibtex](https://github.com/retorquere/zotero-better-bibtex)
+
+2. Export the references you want in your paper to a .bib file
+  - other formats are supported
+  - Easiest to put it wherever the .Rmd lives
+
+3. Reference the .bib file in your YAML
+
+4. Select a citation style
+  - By default uses Chicago author-date format
+  - Other styles can be passed using a .csl file
+    - zotero maintains a [style repository](https://www.zotero.org/styles) to download the .csl you need
+
+
+---
+
+
+# Citations
+
+```yaml
+---
+title: "My Brilliant Paper"
+author: "Awesome Me"
+date: "2019-11-03"
+output: 
+  bookdown::html_document2: default
+  bookdown::pdf_document2: default
+  bookdown::word_document2: default
+bibliography: references.bib
+csl: fish-and-fisheries.csl
+---
+```
+
+---
+
+
+# Citations
+
+Citing references works similarly to all other cross referencing, with a few other tricks. Standard citations go in brackets, separated by semicolons. Don't worry about order. 
+
+```markdown
+Fishes are delicious [@aristotle320BC;@cat2019]
+```
+ 
+You can include other text in there as well
+
+```markdown
+Fishes are delicious [see @aristotle320BC;@cat2019 pp. 33-35]
+```
+
+For in-text citations just omit the `[`
+
+```markdown
+
+@bob2019 is wrong. 
+
+```
+
+---
+
+# Formatting Your Document
+
+There are a bunch of standard options you can add to the YAML that work with most outputs (like toc: true)
+
+### HTML
+You can specify a [`theme`](https://bookdown.org/yihui/rmarkdown/html-document.html) in the YAML, and add your own .css file in the YAML `css: my-theme.css`
+
+#### Word
+You can format a document in Word the way you like it, and save it as a [reference_docx](https://rmarkdown.rstudio.com/articles_docx.html)
+#### PDF
+You can write your own LaTeX templates, or use [`rticles`](https://github.com/rstudio/rticles)
+
+---
+
+
+# rticles
+
+The rticles package has numerous templates for different journals (but not even close to all), including broad categories like Elsevier.
+
+`install.packages(rticles)`
+
+Easiest way from there is in RStudio
+
+1. File&gt;New File&gt;R Markdown
+
+2. Select "From Template"
+
+3. Select the journal template you want
+
+
+This will set the file up to be rendered in the format for the journal. Usually, you'll actually end up submitting the generated .tex file and support files, but R Markdown will take care of creating those for you. 
+
+**rticles is open source, so check the results**!
+
+---
+
+
+# Customizing LaTeX Templates
+
+If you look through the rticles website there are some great examples of turning a new LaTeX template into an rticles template. They welcome submissions!
+
+Alternatively, you can pass pass your own files to augment the default template
+
+```yaml
+---
+title: "My Paper"
+output:
+  bookdown::pdf_document2:
+    includes:
+      in_header: preamble.tex
+      before_body: doc-prefix.tex
+      after_body: doc-suffix.tex
+---
+```
+
+---
+
+# Customizing LaTeX templates
+
+You can also replace the default template entirely
+
+This requires some serious LaTeX skills, and is beyond this class
+
+Thankfully, someone already did the work of translating the UW LaTeX template to R Markdown! [huskydown](https://github.com/benmarwick/huskydown)
+
+
+```yaml
+---
+title: "My Paper"
+output:
+  bookdown::pdf_document2:
+       template: dissertation.tex
+---
+```
+
+
+---
+
+# Submitting Journal Articles (or Dissertations)
+
+Journals have varying degrees of requirements for submission. 
+
+If there's an rticles template, often you can use that, and then submit the required .tex files (and supporting files)
+  - Some journals just want the PDF
+
+If the journal doesn't care about formatting, but requires editable formats (LaTeX, Word), then you can usually just knit the document
+
+  - set `keep_tex: true` if knitting to PDF and submitting LaTeX
+  - Just knit to Word and submit the .docx!
+    - Especially if you have complex tables etc, make sure that the knit to Word worked
+    - Can always do some manual improvements in Word at submission time, but try to keep these to a minimum
+    
+
+---
+
+# Dissertations
+
+University's tend to be sticklers about formatting dissertations. 
+
+Many, including University of Washington, have LaTeX templates you can use, and a growing number of people are converting them to R Markdown templates
+
+* [huskydown](https://github.com/benmarwick/huskydown)
+
+* [gauchodown](https://github.com/DanOvando/gauchodown)
+
+---
+
+
+# Dissertations in R Markdown
+
+Writing your dissertation in R Markdown 
+  * Makes it easy to incorporate last-minute changes
+  
+  * Helps you remember what you did
+  
+  * Sets you up to convert chapters to publications
+  
+  * Saves you from spending the last few weeks of your PhD formatting things
+  
+  * Allows you to easily export your dissertation as a [webpage](https://danovando.github.io/dissertation/)
+  
+  * Makes it harder(ish) to collaborate...
+---
+
+# Editing and Collaboration
+
+Collaboration is the hardest part using R Markdown for collaborative writing. 
+
+Tradeoff between replicability and ease of editing. 
+
+The "best" option
+
+1. Design a project-oriented workflow with GitHub
+
+2. Have co-authors create a branch for their edits
+
+3. Co-authors submit a pull request with their edits
+
+4. Lead author reviews pull requests and accepts/rejects
+
+5. Co-authors either create a new branch for the next round of edits, or rebase their edit branch
+
+This sounds nightmare-ish, but imagine if you'd never heard of word before, and someone suggested that you incorporate edits by collating results of a bunch of emails, a random subset of which build on each other, back into your original document...
+
+---
+
+# Editing and Collaboration
+
+Alternative options I've seen
+
+* Email around edits on the .Rmd itself 
+
+* Only write the methods/results in R Markdown, "text heavy" sections in Word/whatever
+  * Stitch together as best you can
+  
+* There is a package called [reedoc](https://noamross.github.io/redoc/) in the works that allows you to knit to Word, get edits from authors, then pull updated document (with track changes) back into Word!
+  * Very beta
+
+* Send knitted docs to authors, and manually incorporate changes into .Rmd :(
+
+
+---
+
+# Editing and Collaboration
+
+Evaluate each project and consider which pain is worse:
+
+- Keeping graphs, numbers, etc. up to date and reproducible
+
+- Incorporating co-author edits
+
+
+&lt;img src="homer.gif" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Workflow Tips
+
+Simple analysis = All in R Markdown
+
+Complex analysis = Scripts to R Markdown
+
+1. Write a script to run analysis, save key results
+
+  - I like to create versioned sub-directories, e.g. `results/v1.0`
+  
+  - If it's small enough, `save.image` is great
+  
+2. Write paper in .Rmd, with `parameters`
+
+```yaml
+title: My Great Paper
+params:
+  results_name: ["v1.0"]
+  sim_years: [50]
+  burn_years: [20]
+  num_patches: [25]
+```
+
+---
+
+
+# Workflow Tips
+
+Parameters help seamlessly generate documents as results change
+
+Inside the .Rmd, I'll load the relevant results (in this case `results.rds`)
+
+
+```r
+results &lt;- readRDS(here("results",params$results_name,"results.rds"))
+```
+
+And then use my results to make plots, summary tables, etc (often saving those as plots/objects as well along the way)
+
+So, in the last line of my script, I'll write
+
+
+```r
+rmarkdown::render(here("documents", "my-paper.Rmd"), 
+                  params = list(run_name = "v1.0"))
+```
+
+If you've done it all right, by sourcing your main script, you go from raw data to submission-ready paper with one command!
+
+---
+
+
+# Exercise - Pretend Paper
+
+1. Create a new .Rmd
+  - See if there's an rticles template for a journal you use
+
+2. Read in some data (I've added some to data folder)
+
+3. Write an introduction section with at least one reference
+
+4. Write a methods section with a numbered equation
+
+5. Write a results section with at least one figure and table
+
+6. Write a discussion section that references the figure and table
+
+7. Save the figure and the table in your results folder
+
+8. knit the paper to a few different formats and compare results
+
+9. Team up! Push your paper to GitHub
+  - Have each person create a branch of the other paper, make edits, submit pull request
+  - Have each author review, accept/reject edits
+
+
+---
+
+class: center, inverse, middle
+# Bonus Things
+
+---
+
+# Presentations with R Markdown
+ 
+ You've already been coerced into dealing with R Markdown presentations (sorry)
+ 
+ There are lots (too many) ways to do presentations IMO
+ 
+  - [slidy](https://bookdown.org/yihui/rmarkdown/slidy-presentation.html)
+  - [beamer](https://bookdown.org/yihui/rmarkdown/beamer-presentation.html)
+  - [ioslides](https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html)
+  - R Presentation
+  - [Powerpoint](https://bookdown.org/yihui/rmarkdown/powerpoint-presentation.html) (yep!)
+  - [xaringan](https://github.com/yihui/xaringan)
+
+All work pretty well, and have all the benefits of using R Markdown
+  - No more copy and pasting figures into powerpoint!
+
+---
+
+# Xaringan
+
+For a quick and dirty presentation I like ioslides. 
+
+Downside is that ioslides (and others like it) aren't all that flexible: enter xaringan
+
+&gt; The package name xaringan comes from Sharingan, a dōjutsu in Naruto with two abilities: the "Eye of Insight" and the "Eye of Hypnotism". A presentation ninja should have these basic abilities, and I think remark.js may help you acquire these abilities
+&gt;
+&gt; --- Yihui Xie (author of bookdown and lots of R Markdown goodness)
+
+---
+
+
+# Xaringan
+
+xaringan is fully customizable (and looks pretty good out the gates)
+
+  - Real customization requires [learning CSS](https://www.codecademy.com/learn/learn-css)
+    - Bonus: sets you up for a career in web design!
+  
+  - There are several (and growing) [canned themes](https://github.com/yihui/xaringan/wiki/Themes) you can use, and with this as templates it's not bad to write your own
+  
+  - I really can't teach it better than the [example](https://slides.yihui.name/xaringan/)
+---
+
+
+# R Markdown Presentations
+
+One note for any R Markdown presentation: saving is kind of a pain. 
+
+The default is an HTML presentation that you view in a web browser, which is great for presenting from your computer, but tough to share with others (though there are ways, Google!)
+
+Simplest option: Open in Chrome (yes, it really has to be Chrome), select Print, and save to PDF (adjust options to make it look right)
+
+
+---
+
+# blogdown
+
+[blogdown](https://bookdown.org/yihui/blogdown/) is a really cool package for writing R-based blogs!
+
+A reasonable question: Why in the world would you use R to write a blog?
+
+--
+Are we trying to text Nelly with Excel?
+&lt;img src="https://media.giphy.com/media/OgRQGJ3dbuz8A/giphy.gif" style="display: block; margin: auto;" /&gt;
+
+???
+Dilemna, 2002
+---
+
+# blogdown
+
+IMO, if you just want to post text / CV / etc, blogdown is not the way to go. 
+
+But, if you create lots of code-heavy content, it's amazing
+
+  - Tutorials
+  - Summaries of your research with results and figures
+  
+I used it for [my website](danovando.com), but can't teach it better than the tutorials
+
+- [blogdown book](https://bookdown.org/yihui/blogdown/)
+
+- Allison Hill's [tutorial](https://alison.rbind.io/post/2017-06-12-up-and-running-with-blogdown/)
+
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

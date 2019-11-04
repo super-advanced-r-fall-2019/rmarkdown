@@ -1,0 +1,139 @@
+---
+title: "R Markdown Sandbox"
+output:
+  pdf_document:
+    toc: yes
+    number_sections: no
+    df_print: tibble
+    keep_tex: true
+  bookdown::pdf_document2:
+    df_print: tibble
+  html_document:
+    toc: yes
+    toc_float: yes
+    df_print: kable
+  word_document:
+    toc: yes
+linkcolor: blue
+bibliography: references.bib
+csl: fish-and-fisheries.csl
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(xtable)
+library(stargazer)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+Roses are $\color{red}{\text{beautiful red}}$, 
+violets are $\color{blue}{\text{lovely blue}}$.
+
+Roses are `r kableExtra::text_spec("red", color = "red")`,
+
+violets are `r kableExtra::text_spec("blue", color = "blue")`
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+| Option  | Description  |
+|------------|-------------------------------------------|
+| default  | Call the `print.data.frame` generic method |
+| kable  | Use the `knitr::kable` function |
+| tibble  | Use the `tibble::print.tbl_df` function |
+| paged  |  Use `rmarkdown::paged_table` to create a pageable table |
+
+```{r cars}
+mtcars
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, fig.cap="My Plot"}
+plot(pressure)
+```
+
+```{r more-pressure, fig.cap="My Plot}
+plot(pressure)
+```
+
+As you can see in Fig.\@ref(fig:pressure)
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Table
+
+```{r extab, results = "asis"}
+
+tabfoo <- function(is_html = knitr::is_html_output()
+){
+if (is_html){
+  output_format <- "html"
+}  else {
+  output_format <- "latex"
+}
+return(output_format)
+}
+
+print(tabfoo())
+knitr::kable(head(mtcars,5), format = tabfoo(),
+             caption = "Hello") %>% 
+  kableExtra::kable_styling()
+
+```
+
+
+```{r regtable, results = "asis"}
+
+stargazer(lm(mpg ~ cyl, data = mtcars), header = FALSE,title = "This is a great table",
+          label = "tab:regtable")
+
+```
+
+```{r xregtable, results = "asis"}
+
+xtable(lm(mpg ~ cyl, data = mtcars), header = FALSE,title = "Test",
+          label = "tab:xregtable")
+
+```
+
+As you can see in Table.\@ref(tab:regtable) and Table.\@ref(tab:xregtable)
+
+
+Also see Equation.\@ref(eq:mean).
+
+\begin{equation}
+\bar{X} = \frac{\sum_{i=1}^n X_i}{n} (\#eq:mean)
+\end{equation}
+
+```{theorem, label = "pyth", name="Pythagorean theorem"}
+For a right triangle, if $c$ denotes the length of the hypotenuse
+and $a$ and $b$ denote the lengths of the other two sides, we have
+$$a^2 + b^2 = c^2$$
+```
+
+See Theorem.\@ref(thm:pyth)
+
+## Introduction {#intro}
+
+This work is important
+
+## Methods {#methods}
+
+As you can see in the [Introduction](intro), this work is important. Here's how we did it. 
+
+## Conclusion
+
+Based on our amazing methods (Section.\@ref(methods)).. we show that
+
+
+As shown in @holley2004
+
+# Works Cited
